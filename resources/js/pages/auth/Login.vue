@@ -103,8 +103,8 @@ defineProps<{
         </div>
 
         <div class="text-center text-sm text-muted-foreground">
-            Don't have an account?
-            <TextLink :href="register()" :tabindex="5">Sign up</TextLink>
+           
+            <TextLink :href="register()" :tabindex="5">Register with Invite Code</TextLink>
         </div>
     </Form>
 </template>

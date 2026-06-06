@@ -78,7 +78,7 @@ const segments = computed(() => {
 <template>
     <Head title="Dashboard" />
 
-    <div class="flex flex-col gap-6 p-4">
+    <div class="flex flex-col gap-6 p-4 mt-8">
         <!-- Statistic Cards Section -->
         <div class="grid gap-4 md:grid-cols-3">
             <div class="flex flex-col gap-2 rounded-xl border border-sidebar-border/70 bg-card p-6 shadow-sm dark:border-sidebar-border dark:bg-sidebar">
@@ -117,7 +117,7 @@ const segments = computed(() => {
                 
                 <div class="flex flex-col items-center justify-center py-6 gap-6 md:flex-row">
                     <!-- Donut SVG -->
-                    <div class="relative w-40 h-40">
+                    <div class="relative w-80 h-80">
                         <svg viewBox="0 0 42 42" class="w-full h-full transform -rotate-90">
                             <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="currentColor" class="text-secondary/20" stroke-width="3.5"></circle>
                             <!-- Use v-show to prevent Vue 3 compilation error where v-if takes priority over v-for -->

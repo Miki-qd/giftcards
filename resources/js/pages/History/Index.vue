@@ -77,7 +77,7 @@ function formatDate(dateStr: string): string {
 <template>
     <Head title="History" />
 
-    <div class="flex flex-col gap-6">
+    <div class="flex flex-col gap-6 mt-8">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <Heading title="History" description="Activity log of all gift card operations" />
             <div class="flex items-center gap-3">

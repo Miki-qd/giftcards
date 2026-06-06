@@ -151,7 +151,7 @@ onMounted(() => {
 <template>
     <Head title="Gift Cards" />
 
-    <div class="flex flex-col gap-6">
+    <div class="flex flex-col gap-6 mt-8">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <Heading title="Gift Cards" description="Manage your gift cards inventory" />
             <div class="flex items-center gap-3 flex-wrap">
