@@ -42,6 +42,8 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            'toast' => $request->session()->get('toast'),
+            'activeTokens' => fn () => $request->user() ? \App\Models\RegistrationToken::where('is_used', false)->where('expires_at', '>', now())->get() : null,
         ];
     }
 }

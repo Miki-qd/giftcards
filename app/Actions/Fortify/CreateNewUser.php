@@ -22,12 +22,23 @@ class CreateNewUser implements CreatesNewUsers
         Validator::make($input, [
             ...$this->profileRules(),
             'password' => $this->passwordRules(),
+            'registration_token' => [
+                'required', 
+                'string', 
+                \Illuminate\Validation\Rule::exists('registration_tokens', 'token')
+                    ->where('is_used', 0)
+                    ->where(fn ($query) => $query->where('expires_at', '>', now()))
+            ],
         ])->validate();
 
-        return User::create([
+        $user = User::create([
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => $input['password'],
         ]);
+
+        \App\Models\RegistrationToken::where('token', $input['registration_token'])->update(['is_used' => true]);
+
+        return $user;
     }
 }

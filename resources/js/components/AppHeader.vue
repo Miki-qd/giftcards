@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { Link, usePage } from '@inertiajs/vue3';
-import { BookOpen, Folder, LayoutGrid, Menu, Search } from '@lucide/vue';
-import { computed } from 'vue';
+import { Link, usePage, router } from '@inertiajs/vue3';
+import { BookOpen, Folder, LayoutGrid, Menu, Search, CreditCard, History, Key } from '@lucide/vue';
+import { computed, ref } from 'vue';
 import AppLogo from '@/components/AppLogo.vue';
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
@@ -36,6 +36,8 @@ import { useCurrentUrl } from '@/composables/useCurrentUrl';
 import { getInitials } from '@/composables/useInitials';
 import { toUrl } from '@/lib/utils';
 import { dashboard } from '@/routes';
+import cards from '@/routes/cards';
+import history from '@/routes/history';
 import type { BreadcrumbItem, NavItem } from '@/types';
 
 type Props = {
@@ -59,6 +61,16 @@ const mainNavItems: NavItem[] = [
         href: dashboard(),
         icon: LayoutGrid,
     },
+    {
+        title: 'Gift Cards',
+        href: cards.index(),
+        icon: CreditCard,
+    },
+    {
+        title: 'History',
+        href: history.index(),
+        icon: History,
+    },
 ];
 
 const rightNavItems: NavItem[] = [
@@ -73,6 +85,19 @@ const rightNavItems: NavItem[] = [
         icon: BookOpen,
     },
 ];
+
+const isGenerating = ref(false);
+
+const generateToken = () => {
+    isGenerating.value = true;
+    router.post('/dashboard/tokens', {}, {
+        preserveScroll: true,
+        preserveState: true,
+        onFinish: () => {
+            isGenerating.value = false;
+        }
+    });
+};
 </script>
 
 <template>
@@ -189,54 +214,32 @@ const rightNavItems: NavItem[] = [
                 </div>
 
                 <div class="ml-auto flex items-center space-x-2">
-                    <div class="relative flex items-center space-x-1">
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            class="group h-9 w-9 cursor-pointer"
-                        >
-                            <Search
-                                class="size-5 opacity-80 group-hover:opacity-100"
-                            />
-                        </Button>
 
-                        <div class="hidden space-x-1 lg:flex">
-                            <template
-                                v-for="item in rightNavItems"
-                                :key="item.title"
+                    <DropdownMenu v-if="auth.user?.email === 'admin@example.com'">
+                        <DropdownMenuTrigger :as-child="true">
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                class="relative size-10 w-auto rounded-full p-1 focus-within:ring-2 focus-within:ring-primary"
                             >
-                                <TooltipProvider :delay-duration="0">
-                                    <Tooltip>
-                                        <TooltipTrigger>
-                                            <Button
-                                                variant="ghost"
-                                                size="icon"
-                                                as-child
-                                                class="group h-9 w-9 cursor-pointer"
-                                            >
-                                                <a
-                                                    :href="toUrl(item.href)"
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                >
-                                                    <span class="sr-only">{{
-                                                        item.title
-                                                    }}</span>
-                                                    <component
-                                                        :is="item.icon"
-                                                        class="size-5 opacity-80 group-hover:opacity-100"
-                                                    />
-                                                </a>
-                                            </Button>
-                                        </TooltipTrigger>
-                                        <TooltipContent>
-                                            <p>{{ item.title }}</p>
-                                        </TooltipContent>
-                                    </Tooltip>
-                                </TooltipProvider>
-                            </template>
-                        </div>
-                    </div>
+                                <Key class="size-5 text-muted-foreground" />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" class="w-80 p-4">
+                            <div class="flex items-center justify-between mb-4">
+                                <h4 class="font-semibold text-sm">Invite Tokens</h4>
+                                <Button size="sm" @click.stop.prevent="generateToken" :disabled="isGenerating || ((page.props.activeTokens as any[])?.length ?? 0) > 0">Generate</Button>
+                            </div>
+                            <div class="space-y-2">
+                                <div v-for="token in page.props.activeTokens as any[]" :key="token.id" class="flex items-center bg-muted/50 p-2 rounded-md">
+                                    <span class="font-mono text-sm tracking-wider select-all cursor-text w-full text-center">{{ token.token }}</span>
+                                </div>
+                                <div v-if="!(page.props.activeTokens as any[])?.length" class="text-xs text-center text-muted-foreground p-2">
+                                    No active tokens
+                                </div>
+                            </div>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
 
                     <DropdownMenu>
                         <DropdownMenuTrigger :as-child="true">
