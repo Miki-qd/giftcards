@@ -15,21 +15,17 @@ class Card extends Model
         'balance',
     ];
 
+    protected $hidden = [
+        'pin',
+    ];
+
     protected function casts(): array
     {
         return [
+            'pin' => 'hashed',
             'activation_date' => 'datetime',
             'expiration_date' => 'date',
             'balance' => 'decimal:2',
         ];
-    }
-
-    protected static function booted()
-    {
-        static::creating(function ($card) {
-            if ($card->pin) {
-                $card->pin = Hash::make($card->pin);
-            }
-        });
     }
 }

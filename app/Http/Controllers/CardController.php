@@ -76,13 +76,13 @@ class CardController extends Controller
         do {
             $cardNumber = '';
             for ($i = 0; $i < 16; $i++) {
-                $cardNumber .= mt_rand(0, 9);
+                $cardNumber .= random_int(0, 9);
             }
         } while (Card::where('card_number', $cardNumber)->exists());
 
         $pin = '';
         for ($i = 0; $i < 4; $i++) {
-            $pin .= mt_rand(0, 9);
+            $pin .= random_int(0, 9);
         }
 
         $validated['card_number'] = $cardNumber;

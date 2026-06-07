@@ -34,12 +34,9 @@ defineOptions({
     },
 });
 
-// Format the activation_date for datetime-local input (needs "YYYY-MM-DDTHH:mm")
 const formattedActivationDate = props.card.activation_date
     ? props.card.activation_date.slice(0, 16)
     : '';
-
-// Format the expiration_date for date input (needs "YYYY-MM-DD")
 const originalExpirationDate = props.card.expiration_date
     ? props.card.expiration_date.slice(0, 10)
     : '';

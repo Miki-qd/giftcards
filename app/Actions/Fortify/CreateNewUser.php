@@ -31,14 +31,23 @@ class CreateNewUser implements CreatesNewUsers
             ],
         ])->validate();
 
-        $user = User::create([
-            'name' => $input['name'],
-            'email' => $input['email'],
-            'password' => $input['password'],
-        ]);
+        return \Illuminate\Support\Facades\DB::transaction(function () use ($input) {
+            $updated = \App\Models\RegistrationToken::where('token', $input['registration_token'])
+                ->where('is_used', false)
+                ->where('expires_at', '>', now())
+                ->update(['is_used' => true]);
 
-        \App\Models\RegistrationToken::where('token', $input['registration_token'])->update(['is_used' => true]);
+            if (! $updated) {
+                throw \Illuminate\Validation\ValidationException::withMessages([
+                    'registration_token' => ['The registration token has already been used or expired.'],
+                ]);
+            }
 
-        return $user;
+            return User::create([
+                'name' => $input['name'],
+                'email' => $input['email'],
+                'password' => $input['password'],
+            ]);
+        });
     }
 }

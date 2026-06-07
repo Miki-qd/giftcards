@@ -36,7 +36,7 @@ defineOptions({
     },
 });
 
-// Left Donut Chart Computations
+// Left Pie Chart Computations
 const totalStatuses = computed(() => {
     return props.cardStatuses.data.reduce((sum, val) => sum + val, 0) || 1;
 });
@@ -106,21 +106,19 @@ const segments = computed(() => {
             </div>
         </div>
 
-        <!-- Analytics Charts Grid Section -->
+        <!-- Analytics Section -->
         <div class="grid gap-6 md:grid-cols-2">
-            <!-- Left Donut Chart: Card Status Breakdown -->
+            
             <div class="flex flex-col gap-4 rounded-xl border border-sidebar-border/70 bg-card shadow-sm dark:border-sidebar-border dark:bg-sidebar p-6">
                 <div>
                     <h3 class="text-lg font-medium">Card Status Breakdown</h3>
                     <p class="text-sm text-muted-foreground">Distribution of active, redeemed, and expired cards</p>
                 </div>
-                
+
                 <div class="flex flex-col items-center justify-center py-6 gap-6 md:flex-row">
-                    <!-- Donut SVG -->
                     <div class="relative w-80 h-80">
                         <svg viewBox="0 0 42 42" class="w-full h-full transform -rotate-90">
                             <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="currentColor" class="text-secondary/20" stroke-width="3.5"></circle>
-                            <!-- Use v-show to prevent Vue 3 compilation error where v-if takes priority over v-for -->
                             <circle 
                                 v-for="(seg, idx) in segments" 
                                 v-show="seg.val > 0"
@@ -137,14 +135,12 @@ const segments = computed(() => {
                                 class="transition-all duration-300 cursor-pointer"
                             ></circle>
                         </svg>
-                        <!-- Donut Inner Text -->
                         <div class="absolute inset-0 flex flex-col items-center justify-center">
                             <span class="text-2xl font-extrabold text-foreground">{{ props.totalCards }}</span>
                             <span class="text-[10px] uppercase text-muted-foreground tracking-wider font-semibold">Total Cards</span>
                         </div>
                     </div>
 
-                    <!-- Donut Legend -->
                     <div class="flex flex-col gap-3">
                         <div v-for="(seg, idx) in segments" :key="idx" class="flex items-center gap-3">
                             <span class="w-3.5 h-3.5 rounded-full shadow-sm" :class="seg.fillClass"></span>
@@ -157,7 +153,7 @@ const segments = computed(() => {
                 </div>
             </div>
 
-            <!-- Right Widget: System Security -->
+            <!-- System Security -->
             <div class="flex flex-col gap-4 rounded-xl border border-sidebar-border/70 bg-card shadow-sm dark:border-sidebar-border dark:bg-sidebar p-6">
                 <div>
                     <h3 class="text-lg font-medium">System Security</h3>
@@ -165,7 +161,6 @@ const segments = computed(() => {
                 </div>
 
                 <div class="flex flex-col gap-8 pt-6 h-full justify-center">
-                    <!-- Secure Status Badge -->
                     <div class="flex flex-col items-center justify-center p-6 bg-emerald-500/10 rounded-xl border border-emerald-500/20">
                         <div class="h-16 w-16 rounded-full bg-emerald-500/20 flex items-center justify-center mb-4">
                             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-500"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
@@ -174,7 +169,6 @@ const segments = computed(() => {
                         <span class="text-sm text-muted-foreground mt-1">All protection systems are active</span>
                     </div>
 
-                    <!-- Simplified Feature List -->
                     <div class="grid gap-4 bg-muted/30 dark:bg-zinc-900/30 p-5 rounded-lg border border-sidebar-border/50">
                         <div class="flex items-center justify-between">
                             <span class="text-sm font-medium text-foreground">Data Encryption</span>
