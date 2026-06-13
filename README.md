@@ -115,7 +115,7 @@ npm run dev
 
 ### 9. Access the Application
 
-Open **http://127.0.0.1:8000** in your browser.
+Open **http://giftcards.test** in your browser.
 
 #### Default Admin Account
 
